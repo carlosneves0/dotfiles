@@ -1,5 +1,5 @@
 #!/bin/sh
 while true; do
-  feh --bg-max --randomize ~/image
+  feh --bg-max --randomize "$HOME/wallpaper"
   sleep 16s
 done

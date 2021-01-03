@@ -6,7 +6,7 @@
 # options='lock\nexit\npoweroff\nreboot\nsuspend\nhibernate'
 # NOTE: hibernate doesn't work for me.
 options='lock\nexit\npoweroff\nreboot\nsuspend'
-launcher='rofi -width 30 -dmenu -i -p esc'
+launcher='rofi -width 30 -dmenu -i -p power'
 
 option=$(echo -e "$options" | $launcher | awk '{ print $1 }' | tr -d '\r\n')
 case "$option" in

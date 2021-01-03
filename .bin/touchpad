@@ -1,0 +1,30 @@
+#!/bin/sh
+# `touchpad` -> `enabled`
+# `touchpad toggle` -> `disabled`
+# `touchpad` -> `disabled`
+
+touchpad='FocalTechPS/2 FocalTech Touchpad'
+
+_read() {
+  state="$(xinput list-props "$touchpad" \
+    | grep 'Device Enabled' \
+    | cut -d : -f 2 \
+    | grep -oE '[0-9]')"
+  if test "$state" = 1; then
+    echo enabled
+  else
+    echo disabled
+  fi
+}
+
+arg1="${1:-}"
+if test "$arg1" = toggle; then
+  state="$(_read)"
+  if test "$state" = enabled; then
+    xinput disable "$touchpad"
+  else
+    xinput enable "$touchpad"
+  fi
+fi
+
+_read

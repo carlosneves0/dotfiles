@@ -31,7 +31,7 @@ font pango:SF Mono 7
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec "$TERMINAL"
 
 # kill focused window
 bindsym $mod+q kill
@@ -89,7 +89,7 @@ bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
 # focus the parent container
-bindsym $mod+p focus parent
+bindsym $mod+a focus parent
 
 # focus the child container
 #bindsym $mod+d focus child
@@ -134,11 +134,10 @@ bindsym $mod+Shift+0 move container to workspace $ws10
 # reload the configuration file
 bindsym $mod+F5 reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
 bindsym $mod+Shift+F5 restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Escape exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Escape exec ./.bin/escape
+bindsym $mod+Escape exec ~/.bin/escape
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -148,10 +147,10 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize shrink height 10 px or 10 ppt
-        bindsym l resize grow height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
+        # bindsym j resize shrink width 10 px or 10 ppt
+        # bindsym k resize shrink height 10 px or 10 ppt
+        # bindsym l resize grow height 10 px or 10 ppt
+        # bindsym semicolon resize grow width 10 px or 10 ppt
 
         # same bindings, but for the arrow keys
         bindsym Left resize shrink width 10 px or 10 ppt
@@ -167,53 +166,37 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-##
-# i3-gaps <px>
-# gaps inner 0
-# gaps outer 0
-
-# TODO: switch between gaps and no gaps.
-#bindsym $mod+g
-#bindsym $mod+Shift+d gaps inner all set 0; gaps outer all set 0
-#bindsym $mod+Shift+t gaps inner all set 15; gaps outer all set 20
-
 # You can also use any non-zero value if you'd like to have a border
 for_window [class=".*"] border pixel 0
-# border_radius 8
 
 # acpi key bindings + custom
 # keyboard function keys
-bindsym XF86MonBrightnessUp exec light -A 4
-bindsym XF86MonBrightnessDown exec light -U 4
-# bindsym XF86ScreenSaver exec light -S 0
-bindsym XF86ScreenSaver exec physlock
-# # Lock screen
-# bindsym $mod+Shift+l exec physlock
+bindsym XF86MonBrightnessUp exec light -A 10
+bindsym Shift+XF86MonBrightnessUp exec light -A 1
+bindsym XF86MonBrightnessDown exec light -U 10
+bindsym Shift+XF86MonBrightnessDown exec light -U 1
+bindsym XF86ScreenSaver exec light -S 0
 
 # toggle touchpad
-bindsym XF86TouchpadToggle exec bash ~/hacks/arch/touchpad/toggle.sh
+bindsym XF86TouchpadToggle exec touchpad toggle
 
 # audio
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -1%
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +1%
 # grave == '`'
-bindsym $mod+grave exec sh ~/hacks/arch/audio/switch.sh
+# bindsym $mod+grave exec sh ~/hacks/arch/audio/switch.sh
 
 # display
 bindsym XF86Display exec sh ~/hacks/arch/display.sh
-bindsym F8 exec sh ~/hacks/arch/display.sh
+
+# xrandr for an HDMI
+bindsym $mod+bar exec bash ~/.scripts/hdmi.bash
 
 # screenshot
 bindsym --release Print exec scrot -s $HOME/tmp/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym $mod+Print exec scrot -u $HOME/tmp/`date +%Y-%m-%d_%H:%M:%S`.png
 bindsym $mod+Shift+Print exec scrot $HOME/tmp/`date +%Y-%m-%d_%H:%M:%S`.png
-
-# google-chrome
-bindsym $mod+c exec google-chrome-stable
-
-# atom
-bindsym $mod+a exec atom
 
 # Disable focus wrapping
 focus_wrapping no
@@ -221,23 +204,23 @@ focus_wrapping no
 # The middle button and a modifer over any part of the window kills the window
 bindsym --whole-window $mod+button2 kill
 
-# win+right button toggles floating
-bindsym $mod+button3 floating toggle
+# win+right-button toggles floating
+bindsym --whole-window $mod+button3 floating toggle
 
 #floating_minimum_size <width> x <height>
 floating_minimum_size 200 x 200
 #floating_maximum_size <width> x <height>
-# 70vw x 70vh
-floating_maximum_size 1344 x 756
+# 50vw x 50vh
+floating_maximum_size 960 x 540
 
 ##
 # colors
 # class                 border  backgr. text    indicator child_border
-#client.focused          #ffffff #285577 #ffffff #eeeeee   #eeeeee
+#client.focused         #ffffff #285577 #ffffff #eeeeee   #eeeeee
 client.focused          #ffffff #ffffff #000000 #eeeeee   #eeeeee
 client.focused_inactive #333333 #5f676a #ffffff #aaaaaa   #aaaaaa
 client.unfocused        #333333 #222222 #888888 #aaaaaa   #aaaaaa
-client.urgent           #2f343a #900000 #ffffff #900000   #900000
+client.urgent           #900000 #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
@@ -250,9 +233,6 @@ bindsym $mod+Shift+Tab workspace prev_on_output
 bindsym $mod+F1 move workspace to eDP-1
 bindsym $mod+F2 move workspace to HDMI-2
 
-# xrandr for an HDMI
-bindsym $mod+bar exec bash ~/.scripts/hdmi.bash
-
 # Start i3bar to display a workspace bar
 # Use i3blocks to generete the status line.
 bar {
@@ -262,15 +242,15 @@ bar {
   # height 32 # px
   strip_workspace_numbers yes
   tray_output primary
-  font pango:SF Mono Bold 9
+  font pango:SF Mono 9
   separator_symbol " "
   colors {
     # <colorclass>     <border> <background> <text>
     focused_workspace  #ffffff  #ffffff      #000000
     active_workspace   #aaaaaa  #aaaaaa      #000000
     inactive_workspace #000000  #000000      #aaaaaa
-    # urgent_workspace   #2f343a  #900000      #ffffff
-    # binding_mode       #2f343a  #900000      #ffffff
+    urgent_workspace   #900000  #900000      #ffffff
+    binding_mode       #900000  #900000      #ffffff
   }
 }
 
@@ -280,11 +260,5 @@ bar {
 # TODO: extract 30 to $i3bar_height var.
 for_window [class="Gsimplecal"] move down 30px
 
-# restore workspace layout
-
-#exec i3-msg "workspace 1:I; append_layout ~/.i3/workspace-1.json"
-#exec i3-msg "workspace 2:II; move workspace to HDMI-1; append_layout ~/.i3/workspace-2.json"
-#exec i3-msg "workspace 3:III; move workspace to HDMI-1; append_layout ~/.i3/workspace-3.json"
-#exec google-chrome-stable
-#exec kitty
-#exec atom
+# open alacritty on startup
+exec "$TERMINAL"

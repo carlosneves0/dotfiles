@@ -11,6 +11,11 @@
   // font-weight: bold;
 }
 
+// Hide atom's bottom panel
+body > atom-workspace > atom-panel-container.footer {
+  display: none;
+}
+
 // Hide atom's annoying pop-up buttons.
 body > atom-workspace > atom-workspace-axis > atom-panel-container.left > atom-dock > div > div.atom-dock-toggle-button.left,
 body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > div.github-PushPull.inline-block,
@@ -20,14 +25,6 @@ body > atom-workspace > atom-workspace-axis > atom-workspace-axis > atom-panel-c
   display: none;
 }
 
-// Fix Github branch and git buttons in the bottom right corner.
-body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > button.github-ChangedFilesCount.inline-block {
-  margin-left: 0;
-}
-body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > div.github-branch.inline-block {
-  margin-right: 18px;
-}
-
 // Fix select inputs for native-ui theme.
 select.form-control {
   padding: 2px 12px;
@@ -35,8 +32,8 @@ select.form-control {
 
 // Style scrollbars for native-ui theme + monokai syntax.
 .scrollbars-visible-always /deep/ ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 
   &-track {
     background-color: transparent;
@@ -49,9 +46,9 @@ select.form-control {
 }
 
 // Fix small white line appering on the footer inside zen mode for the combo native-ui + zen-mode + monokai.
-body.fullscreen > atom-workspace > atom-panel-container.footer {
-  display: none;
-}
+// body.fullscreen > atom-workspace > atom-panel-container.footer {
+//   display: none;
+// }
 
 // Fix left pane background color for the combo native-ui + zen-mode + monokai.
 body.fullscreen > atom-workspace > atom-workspace-axis > atom-panel-container.left > atom-dock > div > div.atom-dock-mask > div > atom-pane-container > atom-pane > div > div {
@@ -64,6 +61,6 @@ body > atom-workspace > atom-panel-container.modal > atom-panel:nth-child(5) {
 }
 
 // Hide "gutter", stupid debugger breakpoint shit
-body > atom-workspace > atom-workspace-axis > atom-workspace-axis > atom-pane-container > atom-pane > div > atom-text-editor > div > div.gutter-container > div > div:nth-child(1) {
-  display: none;
-}
+// body > atom-workspace > atom-workspace-axis > atom-workspace-axis > atom-pane-container > atom-pane > div > atom-text-editor > div > div.gutter-container > div > div:nth-child(1) {
+//   display: none;
+// }

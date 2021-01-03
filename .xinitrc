@@ -1,24 +1,22 @@
 #!/bin/sh
 
-export PATH="$PATH:~/.bin"
+export HOME=/home/neves
+export PATH="$PATH:$HOME/.bin"
 export LANG=zh_TW.UTF-8
 export TERMINAL=alacritty
 export EDITOR=atom
-export DISPLAY0=eDP-1
-export DISPLAY1=HDMI-2
 
 # TODO: auto detect secondary display + auto config
-#xrandr --setprovideroutputsource modesetting NVIDIA-0
-#xrandr --auto
-#xrandr --dpi 175
-# xrandr --dpi 150 --output eDP-1 --mode 1920x1080 --primary --output HDMI-1 --mode 1920x1080 --right-of eDP-1
-# xrandr --dpi 150 --output eDP-1 --mode 1920x1080 --primary
+display0=eDP-1
+display1=HDMI-2
+xrandr --dpi 150 --output "$display0" --mode 1920x1080 --primary --output "$display1" --mode 1920x1080 --right-of "$display0"
+xrandr --dpi 150 --output "$display0" --mode 1920x1080 --primary
 
 touchpad='FocalTechPS/2 FocalTech Touchpad'
-xinput set-prop "$touchpad" "libinput Tapping Enabled" 1
-xinput set-prop "$touchpad" "libinput Natural Scrolling Enabled" 1
-xinput set-prop "$touchpad" "libinput Accel Speed" 1.0
+xinput set-prop "$touchpad" 'libinput Tapping Enabled' 1
+xinput set-prop "$touchpad" 'libinput Natural Scrolling Enabled' 1
 # Accel Speed == Sensitivity (1.0 is the max value)
+xinput set-prop "$touchpad" 'libinput Accel Speed' 1.0
 
 mxmaster='MX Master 2S Mouse'
 xinput set-prop "$mxmaster" 'libinput Accel Profile Enabled' 0, 1
@@ -29,7 +27,7 @@ xset s off; xset -dpms
 
 unclutter --timeout 1 --ignore-scrolling &
 
-wallpaper &
+# wallpaper &
 
 export GTK_IM_MODULE='fcitx'
 export QT_IM_MODULE='fcitx'

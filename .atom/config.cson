@@ -33,7 +33,7 @@
     userId: "75ea918a-fef5-4699-968f-bd1c0a99eee4"
   "file-icons":
     coloured: false
-    tabPaneIcon: false
+    tabPaneIcon: true
   "fuzzy-finder":
     scoringSystem: "fast"
     useRipGrep: true
@@ -52,7 +52,11 @@
     enabledForAllJavascriptFiles: true
   "selection-highlight":
     highlightBackground: true
-    lightTheme: true
+    lightTheme: false
+  "spell-check":
+    locales: [
+      "en-US"
+    ]
   "tree-view":
     alwaysOpenExisting: true
     autoReveal: true
