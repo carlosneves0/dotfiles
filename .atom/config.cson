@@ -45,6 +45,7 @@
     lightTheme: true
   "ide-typescript":
     typeScriptServer: {}
+  "lisp-paredit": {}
   "one-dark-ui":
     stickyHeaders: true
   react:

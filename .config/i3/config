@@ -138,7 +138,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+F5 restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Escape exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Escape exec sh ~/.config/rofi/scripts/power.sh
+bindsym $mod+Escape exec ./.bin/escape
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -257,12 +257,12 @@ bindsym $mod+bar exec bash ~/.scripts/hdmi.bash
 # Use i3blocks to generete the status line.
 bar {
   status_command i3blocks
-  mode dock
-  position top
-  # height 30 # px
+  mode hide
+  position bottom
+  # height 32 # px
   strip_workspace_numbers yes
   tray_output primary
-  font pango:SF Mono Bold 13
+  font pango:SF Mono Bold 9
   separator_symbol " "
   colors {
     # <colorclass>     <border> <background> <text>

@@ -1,0 +1,33 @@
+#!/bin/sh
+# 2016 Oliver Kraitschy - http://okraits.de
+# rofi-power
+# Use rofi to lock, exit wm, poweroff, reboot, suspend or hibernate.
+
+# options='lock\nexit\npoweroff\nreboot\nsuspend\nhibernate'
+# NOTE: hibernate doesn't work for me.
+options='lock\nexit\npoweroff\nreboot\nsuspend'
+launcher='rofi -width 30 -dmenu -i -p esc'
+
+option=$(echo -e "$options" | $launcher | awk '{ print $1 }' | tr -d '\r\n')
+case "$option" in
+  lock)
+    physlock
+    ;;
+  exit)
+    i3-msg exit
+    ;;
+  poweroff)
+    systemctl poweroff
+    ;;
+  reboot)
+    systemctl reboot
+    ;;
+  suspend)
+    systemctl suspend
+    ;;
+  hibernate)
+    systemctl hibernate
+    ;;
+  *)
+    ;;
+esac
