@@ -1,0 +1,69 @@
+.workspace {
+  font-family: 'New York Small', serif;
+}
+
+.left {
+  font-size: 1.02em;
+}
+
+.editor {
+  font-family: 'SF Mono', 'Hack Nerd Font', monospace;
+  font-weight: bolder;
+}
+
+// Hide atom's annoying pop-up buttons.
+body > atom-workspace > atom-workspace-axis > atom-panel-container.left > atom-dock > div > div.atom-dock-toggle-button.left,
+body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > div.github-PushPull.inline-block,
+body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > button.github-StatusBarTile.inline-block,
+body > atom-workspace > atom-workspace-axis > atom-panel-container.right > atom-dock > div > div.atom-dock-toggle-button.right.atom-dock-toggle-button-visible,
+body > atom-workspace > atom-workspace-axis > atom-workspace-axis > atom-panel-container.bottom > atom-dock > div > div.atom-dock-toggle-button.bottom {
+  display: none;
+}
+
+// Fix Github branch and git buttons in the bottom right corner.
+body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > button.github-ChangedFilesCount.inline-block {
+  margin-left: 0;
+}
+body > atom-workspace > atom-panel-container.footer > atom-panel > status-bar > div > div.status-bar-right > div.react-atom-status-bar.github-StatusBarTileController > div.github-branch.inline-block {
+  margin-right: 18px;
+}
+
+// Fix select inputs for native-ui theme.
+select.form-control {
+  padding: 2px 12px;
+}
+
+// Style scrollbars for native-ui theme + monokai syntax.
+.scrollbars-visible-always /deep/ ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+
+  &-track {
+    background-color: transparent;
+  }
+
+  &-thumb {
+    background-color: #bbb;
+    border: 1.8px solid transparent;
+  }
+}
+
+// Fix small white line appering on the footer inside zen mode for the combo native-ui + zen-mode + monokai.
+body.fullscreen > atom-workspace > atom-panel-container.footer {
+  display: none;
+}
+
+// Fix left pane background color for the combo native-ui + zen-mode + monokai.
+body.fullscreen > atom-workspace > atom-workspace-axis > atom-panel-container.left > atom-dock > div > div.atom-dock-mask > div > atom-pane-container > atom-pane > div > div {
+  background-color: #fff;
+}
+
+// Remove box-shadow from ctrl-shift-p overlay box.
+body > atom-workspace > atom-panel-container.modal > atom-panel:nth-child(5) {
+  box-shadow: none;
+}
+
+// Hide "gutter", stupid debugger breakpoint shit
+body > atom-workspace > atom-workspace-axis > atom-workspace-axis > atom-pane-container > atom-pane > div > atom-text-editor > div > div.gutter-container > div > div:nth-child(1) {
+  display: none;
+}
