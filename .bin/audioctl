@@ -2,15 +2,15 @@
 
 export LANG='en_US.UTF-8'
 
-function status() {
+status() {
   volume=$(pamixer --get-volume)
 
-  muted=$(test "$(pamixer --get-mute)" == 'true' \
+  muted=$(test "$(pamixer --get-mute)" = 'true' \
     && echo 'muted' \
     || echo 'unmuted')
   red='\e[31m'
   green='\e[32m'
-  if test "$muted" == "muted"; then
+  if test "$muted" = "muted"; then
     muted="${red}$muted";
   else
     muted="${green}$muted"
@@ -28,7 +28,7 @@ function status() {
   echo -e "${bold}$volume $muted $hdmi_or_analog"
 }
 
-function device_show() {
+device_show() {
   pactl list cards \
     | grep 'Active Profile: ' \
     | cut -d' ' -f3 \
@@ -36,7 +36,7 @@ function device_show() {
     | grep -oE '(analog|hdmi)'
 }
 
-function device_switch() {
+device_switch() {
   # Switch between analog and hdmi card profiles.
 
   card=$(pactl list cards \
@@ -48,15 +48,15 @@ function device_switch() {
     | grep 'Active Profile: ' \
     | grep -oE 'output:[-a-z]+\+input:[-a-z]+')
 
-  if [ "$active_profile" == 'output:analog-stereo+input:analog-stereo' ]; then
+  if [ "$active_profile" = 'output:analog-stereo+input:analog-stereo' ]; then
     pactl set-card-profile "$card" 'output:hdmi-stereo-extra1+input:analog-stereo'
   else
     pactl set-card-profile "$card" 'output:analog-stereo+input:analog-stereo'
   fi
 }
 
-function muted_show() {
-  if test "$(pamixer --get-mute)" == 'true'; then
+muted_show() {
+  if test "$(pamixer --get-mute)" = 'true'; then
     echo 'muted'
   else
     echo 'unmuted'
