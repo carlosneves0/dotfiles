@@ -5,6 +5,7 @@ export PATH="$PATH:$HOME/.bin"
 export LANG=zh_TW.UTF-8
 export TERMINAL=alacritty
 export EDITOR=atom
+export ATOM_HOME="$HOME/.config/atom"
 
 # TODO: auto detect secondary display + auto config
 display0=eDP-1
