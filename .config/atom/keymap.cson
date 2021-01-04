@@ -1,0 +1,8 @@
+'body':
+  'ctrl-alt-down': 'window:focus-pane-below'
+  'ctrl-alt-left': 'window:focus-pane-on-left'
+  'ctrl-alt-right': 'window:focus-pane-on-right'
+  'ctrl-alt-up': 'window:focus-pane-above'
+
+'.platform-win32 atom-workspace, .platform-linux atom-workspace':
+  'ctrl-shift-A': 'application:add-project-folder'

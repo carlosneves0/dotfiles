@@ -1,0 +1,73 @@
+"*":
+  Zen:
+    gutter: true
+    softWrap: true
+    typewriter: true
+    width: 90
+  "atom-ide-ui":
+    "atom-ide-diagnostics-ui": {}
+  "autocomplete-plus": {}
+  autosave:
+    enabled: true
+  "autosave-onchange":
+    disableOnCommit: false
+  core:
+    autoHideMenuBar: true
+    closeDeletedFileTabs: true
+    customFileTypes:
+      "source.build": [
+        "bazel"
+      ]
+    telemetryConsent: "limited"
+    themes: [
+      "native-ui"
+      "monokai"
+    ]
+    uriHandlerRegistration: "always"
+  editor:
+    fontSize: 19
+    scrollPastEnd: true
+    showIndentGuide: true
+    showInvisibles: true
+  "exception-reporting":
+    userId: "75ea918a-fef5-4699-968f-bd1c0a99eee4"
+  "file-icons":
+    coloured: false
+    tabPaneIcon: true
+  "fuzzy-finder":
+    scoringSystem: "fast"
+    useRipGrep: true
+  hidpi:
+    defaultScaleFactor: 1.2
+  "highlight-selected":
+    hideHighlightOnSelectedWord: true
+    highlightBackground: true
+    lightTheme: true
+  "ide-typescript":
+    typeScriptServer: {}
+  "lisp-paredit": {}
+  "one-dark-ui":
+    stickyHeaders: true
+  react:
+    enabledForAllJavascriptFiles: true
+  "selection-highlight":
+    highlightBackground: true
+    lightTheme: false
+  "spell-check":
+    locales: [
+      "en-US"
+    ]
+  "tree-view":
+    alwaysOpenExisting: true
+    autoReveal: true
+  welcome:
+    showOnStartup: false
+".build.source":
+  editor:
+    tabLength: 4
+".bzl.source":
+  editor:
+    tabLength: 4
+".html.text.vue":
+  editor:
+    tabLength: 4
