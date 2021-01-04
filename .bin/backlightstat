@@ -1,0 +1,28 @@
+#!/bin/sh
+
+print_status() {
+  while true; do
+    intensity=$(light -G | cut -d '.' -f1)
+
+    intensity_float=$(echo $intensity 100 | awk '{ print $1 / $2 }' | sed 's/^0\./\./')
+
+    if test "$intensity_float" == '1'; then
+      intensity_float='<span size="xx-small"> </span>1'
+    fi
+
+    # #cccc00
+    echo " <span color='#ffffff'><span font='Hack Nerd Font'></span><span size='xx-small'> </span>$intensity_float</span> "
+
+    sleep 1s;
+  done
+}
+
+print_status &
+
+while read button; do
+  if test "$button" == '4'; then
+    light -A 4
+  elif test "$button" == '5'; then
+    light -U 4
+  fi
+done

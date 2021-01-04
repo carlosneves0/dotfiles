@@ -1,0 +1,158 @@
+#!/bin/sh
+
+acpi=$(acpi | sed 's/^Battery 0: //')
+acpi_exit_code=$?
+state=$(echo "$acpi" | cut -d',' -f1)
+percentage=$(echo "$acpi" | cut -d',' -f2 | grep -oE '[0-9]+')
+
+time_remaining=''
+if test "$state" == 'Charging' || test "$state" == 'Discharging'; then
+  time_remaining="$(echo "$acpi" | cut -d',' -f3 | cut -d' ' -f2)"
+
+  hours_remaining=$(echo "$time_remaining" | cut -d':' -f1 | sed 's/^0//')
+  minutes_remaining=$(echo "$time_remaining" | cut -d':' -f2 | sed 's/^0//')
+  seconds_remaining=$(echo "$time_remaining" | cut -d':' -f3 | sed 's/^0//')
+
+  if test "$hours_remaining" != '0'; then
+    time_remaining="${hours_remaining}h${minutes_remaining}m"
+    if test "$minutes_remaining" == '0'; then
+      time_remaining="${hours_remaining}h"
+    fi
+  else
+    time_remaining="${minutes_remaining}m${seconds_remaining}s"
+    if test "$seconds_remaining" == '0'; then
+      time_remaining="${minutes_remaining}m"
+    fi
+  fi
+
+  time_remaining="/$time_remaining"
+fi
+
+icon=''
+color=''
+degraded='false'
+if test "$percentage" -eq '100'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#f0e68c'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '90'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#f0e68c'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '80'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ffff66'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '70'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ffff33'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '60'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ffff00'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '50'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ffcc00'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '40'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ff9900'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '30'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ff6600'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '20'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    color='#ff3300'
+  else
+    color='#66efaa'
+  fi
+elif test "$percentage" -ge '10'; then
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    # degraded will make the background #ff0000.
+    degraded='true'
+    color='#ffffff'
+  else
+    color='#66efaa'
+  fi
+else
+  icon=''
+  if test "$state" == 'Full' || test "$state" == 'Not charging'; then
+    color='#ffffff'
+  elif test "$state" == 'Discharging'; then
+    # degraded will make the background #ff0000.
+    degraded='true'
+    color='#ffffff'
+  else
+    color='#66efaa'
+  fi
+fi
+
+if test "$percentage" == '100'; then
+  percentage_float='<span size="xx-small"> </span>1'
+elif test "$percentage" -lt '10'; then
+  percentage_float=".0$percentage"
+else
+  percentage_float=".$(echo "$percentage" | sed 's/0$//')"
+fi
+
+if test "$acpi_exit_code" != '0'; then
+  degraded='true'
+  echo " <span font='Hack Nerd Font' color='#ffff00'></span> "
+elif test "$state" == 'Unknown'; then
+  echo " <span font='Hack Nerd Font' color='#ff00ff'></span> "
+else
+  echo " <span color='$color'><span font='Hack Nerd Font'>$icon</span>$percentage_float<span size='x-small'>$time_remaining</span></span> "
+fi
+
+if test "$degraded" == 'true'; then
+  exit 33
+fi

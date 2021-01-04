@@ -1,0 +1,24 @@
+#!/bin/sh
+
+t_warn=70
+t_crit=90
+temperature=$(acpi --thermal | grep -oE '[0-9]{1,3}.[0-9]+')
+t_int=$(echo $temperature | cut -d '.' -f1) # Truncate temp 56.0 => 56
+
+# Output format:
+# echo short
+# echo full
+# echo color
+if (( $t_int >= $t_crit )); then
+  echo " /$temperature°C"
+  echo " /$temperature°C"
+  echo "#ff0000"
+elif (( $t_int >= $t_warn )); then
+  echo " /$temperature°C"
+  echo " /$temperature°C"
+  echo "#ffff00"
+else
+  echo " /$temperature°C"
+  echo " /$temperature°C"
+  echo "#ffffff"
+fi

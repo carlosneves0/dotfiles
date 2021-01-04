@@ -1,0 +1,58 @@
+#!/bin/sh
+
+print_status() {
+  while true; do
+    # remove color from audioctl output
+    status=$(audioctl | sed -r 's/[[:cntrl:]]\[[0-9]{1,3}m//g')
+    volume=$(echo "$status" | cut -d' ' -f1)
+    muted=$(echo "$status" | cut -d' ' -f2)
+    device=$(echo "$status" | cut -d' ' -f3)
+
+    volume_float=".$(echo $volume | sed 's/0$//')"
+    if test "$volume" == '100'; then
+      volume_float='<span size="x-small"> </span>1'
+    elif test "$volume" -lt '10'; then
+      volume_float=".0$volume"
+    fi
+
+    muted_icon='墳'
+    # color='#dd007e'
+    color='#ffffff'
+    background=''
+    if test "$muted" == 'muted'; then
+      # muted_icon='ﱝ' # this one bugs the whole thing...
+      # muted_icon=' '
+      muted_icon='婢'
+      color='#ffffff'
+      background="background='#ff0000'"
+    fi
+
+    device_icon=''
+    if test "$device" == 'hdmi'; then
+      device_icon=''
+    fi
+
+    status="<span color='$color' $background> "
+    status="$status<span font='Hack Nerd Font'>$muted_icon</span>"
+    # status="$status<span size="xx-small"> </span>"
+    status="$status$volume_float"
+    status="$status<span size='xx-small'>/$device</span>"
+    echo "$status </span>"
+
+    sleep .6s
+  done
+}
+
+print_status &
+
+while read button; do
+  if test "$button" == '1'; then
+    audioctl muted toggle > /dev/null 2>&1
+  elif test "$button" == '3'; then
+    audioctl device switch > /dev/null 2>&1
+  elif test "$button" == '4'; then
+    audioctl volume+ > /dev/null 2>&1
+  elif test "$button" == '5'; then
+    audioctl volume- > /dev/null 2>&1
+  fi
+done

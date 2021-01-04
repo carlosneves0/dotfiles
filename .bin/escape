@@ -1,5 +1,6 @@
 #!/bin/sh
 # 2016 Oliver Kraitschy - http://okraits.de
+# 2021 Carlos Neves
 # rofi-power
 # Use rofi to lock, exit wm, poweroff, reboot, suspend or hibernate.
 

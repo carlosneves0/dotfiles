@@ -1,0 +1,177 @@
+#!/bin/sh
+
+export LANG='en_US.UTF-8'
+
+function status() {
+  volume=$(pamixer --get-volume)
+
+  muted=$(test "$(pamixer --get-mute)" == 'true' \
+    && echo 'muted' \
+    || echo 'unmuted')
+  red='\e[31m'
+  green='\e[32m'
+  if test "$muted" == "muted"; then
+    muted="${red}$muted";
+  else
+    muted="${green}$muted"
+  fi
+
+  hdmi_or_analog=$(pactl list cards \
+    | grep 'Active Profile: ' \
+    | cut -d' ' -f3 \
+    | cut -d'+' -f1 \
+    | grep -oE '(analog|hdmi)')
+  cyan='\e[36m'
+  hdmi_or_analog="${cyan}$hdmi_or_analog"
+
+  bold='\e[1m'
+  echo -e "${bold}$volume $muted $hdmi_or_analog"
+}
+
+function device_show() {
+  pactl list cards \
+    | grep 'Active Profile: ' \
+    | cut -d' ' -f3 \
+    | cut -d'+' -f1 \
+    | grep -oE '(analog|hdmi)'
+}
+
+function device_switch() {
+  # Switch between analog and hdmi card profiles.
+
+  card=$(pactl list cards \
+    | grep 'Card #0' -A1 \
+    | grep 'Name: ' \
+    | cut -d' ' -f2)
+
+  active_profile=$(pactl list cards \
+    | grep 'Active Profile: ' \
+    | grep -oE 'output:[-a-z]+\+input:[-a-z]+')
+
+  if [ "$active_profile" == 'output:analog-stereo+input:analog-stereo' ]; then
+    pactl set-card-profile "$card" 'output:hdmi-stereo-extra1+input:analog-stereo'
+  else
+    pactl set-card-profile "$card" 'output:analog-stereo+input:analog-stereo'
+  fi
+}
+
+function muted_show() {
+  if test "$(pamixer --get-mute)" == 'true'; then
+    echo 'muted'
+  else
+    echo 'unmuted'
+  fi
+}
+
+case "$1" in
+  'status')
+    ;&
+  '')
+    status
+    ;;
+
+  'device')
+    case "$2" in
+      'show')
+        ;&
+      '')
+        device_show
+        ;;
+
+      'switch')
+        device_switch
+        device_show
+        ;;
+
+      *)
+        echo >&2 "Error: invalid device subcommand \"$2\"."
+        exit 1
+        ;;
+    esac
+    ;;
+
+  'muted')
+    case "$2" in
+      'show')
+        ;&
+      '')
+        muted_show
+        ;;
+
+      'toggle')
+        pamixer --toggle-mute
+        muted_show
+        ;;
+
+      *)
+        echo >&2 "Error: invalid muted subcommand \"$2\"."
+        exit 1
+        ;;
+    esac
+    ;;
+
+  'mute')
+    pamixer --mute
+    muted_show
+    ;;
+
+  'unmute')
+    pamixer --unmute
+    muted_show
+    ;;
+
+  'volume')
+    pamixer --get-volume
+    ;;
+
+  'volume-')
+    pamixer --decrease 1
+    pamixer --get-volume
+    ;;
+
+  'volume--')
+    pamixer --decrease 10
+    pamixer --get-volume
+    ;;
+
+  'volume---')
+    pamixer --decrease 100
+    pamixer --get-volume
+    ;;
+
+  'volume+')
+    pamixer --increase 1
+    pamixer --get-volume
+    ;;
+
+  'volume++')
+    pamixer --increase 10
+    pamixer --get-volume
+    ;;
+
+  'volume+++')
+    pamixer --increase 100
+    pamixer --get-volume
+    ;;
+
+  *)
+    echo ''
+    echo "  $(basename $0) [command] [subcommand]"
+    echo ''
+    echo 'Commands:'
+    echo '  [status]      : print volume, muted state and active device;'
+    echo '  device [show] : print active device;'
+    echo '  device switch : switch between analog and hdmi devices;'
+    echo '  muted [show]  : print muted state;'
+    echo '  muted toggle  : toggle muted/unmuted;'
+    echo '  mute          : mute;'
+    echo '  unmute        : unmute;'
+    echo '  volume        : print current volume;'
+    echo '  volume-       : decrease volume by 1);'
+    echo '  volume--      : decrease volume by 10);'
+    echo '  volume---     : decrease volume by 100);'
+    echo '  volume+       : increase volume by 1);'
+    echo '  volume++      : increase volume by 10);'
+    echo '  volume+++     : increase volume by 100).'
+    ;;
+esac

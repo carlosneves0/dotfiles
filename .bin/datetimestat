@@ -1,0 +1,16 @@
+#!/bin/sh
+
+function print_datetime_status() {
+  while true; do
+    echo " $(date '+%Y-%m-%d/%a %H:%M:%S')<span size='small'> </span>"
+    sleep 1s
+  done
+}
+
+print_datetime_status &
+
+while read button; do
+  if test "$button" = 1; then
+    gsimplecal
+  fi
+done

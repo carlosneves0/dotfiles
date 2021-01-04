@@ -1,0 +1,95 @@
+#!/bin/sh
+# Copyright (C) 2014 Julien Bonjean <julien@bonjean.info>
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# const [state, setState] = usePersitedState('s')
+state='s' # 's' for short vs 'f' for full
+state_file='/tmp/memory.state'
+if [ -e $state_file ]; then
+  state=$(cat $state_file)
+  if [ $state != 's' ] && [ $state != 'f' ]; then
+    state='s'
+  fi
+fi
+
+# onClick={() => state == 's' ? setState('f') : setState('s')}
+if [ "${BLOCK_BUTTON}" -eq 1 ]; then
+  if [ $state = 's' ]; then
+    state='f'
+  else
+    state='s'
+  fi
+fi
+printf $state > $state_file
+
+TYPE="${BLOCK_INSTANCE:-mem}"
+
+awk -v type=$TYPE -v state=$state '
+/^MemTotal:/ {
+	mem_total=$2
+}
+/^MemFree:/ {
+	mem_free=$2
+}
+/^Buffers:/ {
+	mem_free+=$2
+}
+/^Cached:/ {
+	mem_free+=$2
+}
+/^SwapTotal:/ {
+	swap_total=$2
+}
+/^SwapFree:/ {
+	swap_free=$2
+}
+END {
+	if (type == "swap") {
+		free=swap_free/1024/1024
+		used=(swap_total-swap_free)/1024/1024
+		total=swap_total/1024/1024
+	} else {
+		free=mem_free/1024/1024
+		used=(mem_total-mem_free)/1024/1024
+		total=mem_total/1024/1024
+	}
+
+	pct=0
+	if (total > 0) {
+		pct=used/total*100
+	}
+
+	if (state == "s") {
+		# full text
+		printf("<span size=\"large\"></span>/%.f%%\n", pct)
+		# short text
+		printf("%.f%%\n", pct)
+	} else {
+		# full text
+		printf("<span size=\"large\"></span>/%.1fG/%.1fG (%.f%%)\n", used, total, pct)
+		# short text
+		printf("%.f%%\n", pct)
+	}
+
+	# color
+	if (pct > 90) {
+		print("#FF0000")
+	} else if (pct > 80) {
+		print("#FFAE00")
+	} else if (pct > 70) {
+		print("#FFF600")
+	}
+}
+' /proc/meminfo
