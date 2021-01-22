@@ -9,10 +9,17 @@ print_status() {
     device=$(echo "$status" | cut -d' ' -f3)
 
     volume_float=".$(echo $volume | sed 's/0$//')"
-    if test "$volume" == '100'; then
+    if test "$volume" -gt 100; then
+      volume_float="$(perl -e "printf(\"%.1f\", $volume/100)")"
+      volume_float="<span size=\"x-small\"> </span>$volume_float"
+    elif test "$volume" -eq 100; then
       volume_float='<span size="x-small"> </span>1'
-    elif test "$volume" -lt '10'; then
-      volume_float=".0$volume"
+    elif test "$volume" -lt 10; then
+      if test "$volume" -eq 0; then
+        volume_float='<span size="x-small"> </span>0'
+      else
+        volume_float=".0$volume"
+      fi
     fi
 
     muted_icon='墳'

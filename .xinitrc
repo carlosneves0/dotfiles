@@ -28,7 +28,7 @@ xset s off; xset -dpms
 
 unclutter --timeout 1 --ignore-scrolling &
 
-# wallpaper &
+wallpaper &
 
 export GTK_IM_MODULE='fcitx'
 export QT_IM_MODULE='fcitx'
