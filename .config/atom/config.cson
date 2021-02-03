@@ -18,6 +18,9 @@
       "source.build": [
         "bazel"
       ]
+    disabledPackages: [
+      "language-javascript"
+    ]
     telemetryConsent: "limited"
     themes: [
       "native-ui"
