@@ -230,8 +230,10 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
 # win+tab
-bindsym $mod+Tab workspace next_on_output
-bindsym $mod+Shift+Tab workspace prev_on_output
+# bindsym $mod+Tab workspace next_on_output
+# bindsym $mod+Shift+Tab workspace prev_on_output
+bindsym $mod+Tab exec rofi -show window
+# bindsym $mod+Shift+Tab workspace prev_on_output
 
 # move workspace to output
 bindsym $mod+F1 move workspace to eDP-1
