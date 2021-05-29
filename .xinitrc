@@ -1,17 +1,17 @@
 #!/bin/sh
 
 export HOME=/home/neves
-export PATH="$PATH:$HOME/.bin"
+export PATH="$HOME/.bin:$PATH"
 export LANG=zh_TW.UTF-8
 export TERMINAL=alacritty
 export EDITOR=atom
 export ATOM_HOME="$HOME/.config/atom"
 
 # TODO: auto detect secondary display + auto config
-display0=eDP-1
-display1=HDMI-2
-xrandr --dpi 150 --output "$display0" --mode 1920x1080 --primary --output "$display1" --mode 1920x1080 --right-of "$display0"
-xrandr --dpi 150 --output "$display0" --mode 1920x1080 --primary
+export DISPLAY0=eDP-1-1 DISPLAY1=HDMI-1-2
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+xrandr --dpi 150 --output "$DISPLAY0" --mode 1920x1080 --primary --output "$DISPLAY1" --mode 1920x1080 --right-of "$DISPLAY0"
+xrandr --dpi 150 --output "$DISPLAY0" --mode 1920x1080 --primary
 
 touchpad='FocalTechPS/2 FocalTech Touchpad'
 xinput set-prop "$touchpad" 'libinput Tapping Enabled' 1

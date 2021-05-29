@@ -1,9 +1,7 @@
 "*":
   Zen:
     gutter: true
-    softWrap: true
-    typewriter: true
-    width: 90
+    tabs: "single"
   "atom-ide-ui":
     "atom-ide-diagnostics-ui": {}
   "autocomplete-plus": {}
@@ -20,15 +18,16 @@
       ]
     disabledPackages: [
       "language-javascript"
+      "lisp-paredit"
     ]
     telemetryConsent: "limited"
     themes: [
-      "native-ui"
+      "one-dark-ui"
       "monokai"
     ]
     uriHandlerRegistration: "always"
   editor:
-    fontSize: 19
+    fontSize: 22
     scrollPastEnd: true
     showIndentGuide: true
     showInvisibles: true

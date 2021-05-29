@@ -2,8 +2,15 @@
   font-family: 'New York Small', serif;
 }
 
-.left {
-  font-size: 1.02em;
+.left > ul.list-inline.tab-bar.inset-panel {
+  display: none;
+}
+.left .item-views {
+  font-family: 'SF Mono', 'Hack Nerd Font', monospace;
+  font-size: 2vh;
+}
+body.fullscreen > atom-workspace > atom-workspace-axis > atom-panel-container.left > atom-dock > div > div.atom-dock-mask > div > atom-pane-container > atom-pane > div > div.tool-panel.tree-view {
+  background: #282828;
 }
 
 .editor {
@@ -40,7 +47,7 @@ select.form-control {
   }
 
   &-thumb {
-    background-color: #bbb;
+    // background-color: #bbb;
     border: 1.8px solid transparent;
   }
 }
